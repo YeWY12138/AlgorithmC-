@@ -28,28 +28,20 @@ namespace binary_search{
     }
 
 }//namespace binary_search
+
+
+
 namespace expontial_search{
     uint64_t expontialSearch(std::vector<uint64_t>arr, uint64_t val){
-        if(arr.size() == 0) return -1;//not found
-        uint64_t left = 0;
-        uint64_t right = 1;
-        //uint64_t right = arr.size() == 1? 0: 1;
-        uint64_t res = -1;
-        while(left != arr.size()){
-            if(search::binary_search::binarySearch(arr,val,left,right) == -1){
-                left = right+1;
-                if(left *2 -1 >= arr.size()){
-                    right = arr.size()-1;
-                }else{
-                    right = left*2 -1;
-                }
-            }
-            else{
-                res = search::binary_search::binarySearch(arr,val,left,right);
-                break;                
-            }
+        uint64_t right = arr.size() == 1 ? 0 : 1;
+        while(arr[right] < val && right < arr.size() - 1){
+            if(right*2 >= arr.size() ) right = arr.size() - 1;
+            else right *= 2;
         }
-        return res;
+        if(arr[right] < val) return -1;
+        else{
+            return search::binary_search::binarySearch(arr,val,right/2,right);
+        }
     }
 }//namespace expontial_search
 
@@ -61,11 +53,11 @@ static void test1() {
     // array = [1,3,5,7,9,8,6,4,2] , Value = 4
     // should return 3
 
-    //std::vector<uint64_t> arr = {1, 3, 5, 7, 9, 8, 6, 4, 2};
-    //std::sort(arr.begin(), arr.end());
-    std::vector<uint64_t> arr = {};
+    std::vector<uint64_t> arr = {1, 3, 5, 7, 9, 8, 6, 4, 2};
+    std::sort(arr.begin(), arr.end());
+    //std::vector<uint64_t> arr = {};
     uint64_t expected_ans = 3;
-    uint64_t derived_ans = search::expontial_search::expontialSearch(arr, 4);
+    uint64_t derived_ans = search::expontial_search::expontialSearch(arr, 100);
     std::cout << "Test #1: ";
     std::cout << derived_ans;
     //assert(derived_ans == expected_ans);
